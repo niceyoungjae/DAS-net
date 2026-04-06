@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+checkpoints/
+paper_materials/
+.claude/
+.vscode/
+montecarlo_*.csv
+montecarlo_*.log
+*.bak
+*.mc_bak
+node_modules/
