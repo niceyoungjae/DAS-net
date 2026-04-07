@@ -129,9 +129,7 @@ Each model has a corresponding config file (`config_*.yaml`) with dataset path, 
 }
 ```
 
-## Acknowledgments
 
-This work was supported by Korea Research Institute for defense Technology Planning and advancement (KRIT) grant funded by the Korea government (DAPA) (KRIT-CT-23-041).
 
 ## License
 
