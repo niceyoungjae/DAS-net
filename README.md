@@ -2,6 +2,7 @@
 
 **A Lightweight Dynamic Convolution Network with Attention Gates and Deep Supervision for UAV Semantic Segmentation**
 
+[![🤗 Open in Spaces](https://img.shields.io/badge/🤗-Open%20in%20Spaces-blue?style=for-the-badge)](https://huggingface.co/spaces/niceyj/DAS-Net-Demo)
 [![Paper](https://img.shields.io/badge/Paper-Applied%20Sciences-blue)](https://www.mdpi.com/journal/applsci)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
@@ -11,18 +12,28 @@
 
 ---
 
-##  Highlights
+## 🎮 Try It Live! (No installation required)
 
--  **Lightweight**: 1.66 M parameters (14.7× smaller than ResNet-34 UNet)
--  **Accurate**: Matches UNet (mean test mIoU **0.6780** vs. 0.6760) on a 174,008-image test set
--  **Real-time**: **113 FPS** on NVIDIA A6000 GPU (FP32, batch size 1, 512×512)
--  **Statistically validated**: Three-seed Monte Carlo cross-validation (p = 0.045, Cohen's d = 1.74)
--  **Anti-UAV ready**: Designed for resource-constrained UAV surveillance platforms
+[![Try DAS-Net Live](https://img.shields.io/badge/🤗-Try%20DAS--Net%20Live%20Demo-orange?style=for-the-badge&logo=huggingface)](https://huggingface.co/spaces/niceyj/DAS-Net-Demo)
+
+**Upload your own UAV image → DAS-Net detects it in real-time.**
+👉 **[https://huggingface.co/spaces/niceyj/DAS-Net-Demo](https://huggingface.co/spaces/niceyj/DAS-Net-Demo)**
+
+---
+
+## 🎯 Highlights
+
+- ✨ **Lightweight**: 1.66 M parameters (14.7× smaller than ResNet-34 UNet)
+- 🎯 **Accurate**: Matches UNet (mean test mIoU **0.6780** vs. 0.6760) on a 174,008-image test set
+- ⚡ **Real-time**: **113 FPS** on NVIDIA A6000 GPU (FP32, batch size 1, 512×512)
+- 📊 **Statistically validated**: Three-seed Monte Carlo cross-validation (p = 0.045, Cohen's d = 1.74)
+- 🛰 **Anti-UAV ready**: Designed for resource-constrained UAV surveillance platforms
 
 ---
 
 ## 📋 Table of Contents
 
+- [🎮 Try It Live](#-try-it-live-no-installation-required)
 - [Overview](#overview)
 - [Visual Results](#-visual-results)
 - [Architecture](#architecture)
@@ -270,7 +281,7 @@ This project is licensed under the **MIT License** — see [LICENSE](LICENSE) fo
 
 ## Contact
 
-- **Young Jae Kim** (First Author, Corresponding Author): niceyj16@kookmin.ac.kr
+- **Young Jae Kim** (First Author): niceyj16@kookmin.ac.kr
 - **Sang-Chul Kim** (Corresponding Author): sckim7@kookmin.ac.kr
 - **Affiliation**: Department of AI·SW / School of Computer Science, Kookmin University, Seoul, Republic of Korea
 
