@@ -6,8 +6,31 @@ from torch.utils.data import DataLoader
 import numpy as np
 import os
 import csv
+import random
 import segmentation_models_pytorch as smp
 from omegaconf import OmegaConf
+
+
+# ══════════════════════════════════════════════
+#  Global seed (DASNET_SEED env var를 모든 random에 적용)
+#  run_multiseed.py가 seed마다 다른 값을 주입 → 모델 초기화 / 데이터 셔플 / subset 다 다르게
+# ══════════════════════════════════════════════
+def set_global_seed(seed=None):
+    if seed is None:
+        seed = int(os.environ.get('DASNET_SEED', 42))
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    # 완전 결정론적이면 너무 느려져서 benchmark는 켜둠 (속도 우선)
+    torch.backends.cudnn.deterministic = False
+    torch.backends.cudnn.benchmark = True
+    print(f"[Seed] Global seed set to {seed}")
+    return seed
+
+
+# 모듈 import 시점에 자동으로 seed 적용 (train_*.py가 utils.common을 import할 때 발동)
+_GLOBAL_SEED = set_global_seed()
 
 
 # ══════════════════════════════════════════════

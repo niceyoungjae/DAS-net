@@ -1,10 +1,12 @@
 dataset:
-  root: C:/test/combined_uav/
+  root: C:/test/
   num_workers: 8
   batch_size: 24
   image_size:
   - 512
   - 512
+  max_samples: 20000
+  max_samples_val: 1000
 trainer:
   pretrained_path: checkpoints
   epochs: 50
@@ -22,6 +24,6 @@ trainer:
     min_delta: 0.001
     mode: min
   checkpoint:
-    save_dir: checkpoints/unet
+    save_dir: checkpoints/pan
 model:
-  name: unet
+  name: pan

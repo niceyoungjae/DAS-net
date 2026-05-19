@@ -1,0 +1,53 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the associated paper."
+title: "DAS-Net: A Lightweight Dynamic Convolution Network with Attention Gates and Deep Supervision for UAV Semantic Segmentation"
+authors:
+  - family-names: "Kim"
+    given-names: "Young Jae"
+    affiliation: "Department of AI·SW, Kookmin University"
+    email: "niceyj16@kookmin.ac.kr"
+  - family-names: "Kim"
+    given-names: "Sang-Chul"
+    affiliation: "School of Computer Science, Kookmin University"
+    email: "sckim7@kookmin.ac.kr"
+date-released: 2026-05-19
+version: "1.0.0"
+license: "MIT"
+repository-code: "https://github.com/niceyoungjae/DAS-net"
+url: "https://github.com/niceyoungjae/DAS-net"
+keywords:
+  - "anti-UAV"
+  - "semantic segmentation"
+  - "lightweight network"
+  - "dynamic convolution"
+  - "attention gate"
+  - "deep supervision"
+  - "U-Net"
+  - "edge AI"
+  - "Jetson"
+abstract: >
+  Anti-UAV surveillance demands real-time pixel-level UAV localization on
+  resource-constrained gimbal-mounted platforms. We propose DAS-Net (Dynamic
+  Attention-Supervised Network), which extends the lightweight ThinDyUNet
+  baseline with three architectural improvements: (1) symmetric dynamic
+  convolution applied to both encoder and decoder, (2) attention gates filtering
+  skip connections, and (3) deep supervision with auxiliary loss heads. Under
+  a three-seed Monte Carlo cross-validation protocol on a 174,008-image test
+  set, DAS-Net achieves a mean test mIoU of 0.6780 and Dice coefficient of
+  0.7509, outperforming the ThinDyUNet baseline by +6.65 percentage points
+  (p = 0.045, Cohen's d = 1.74). The model maintains only 1.66M parameters
+  (14.7× smaller than ResNet-34 UNet) and runs at 113 FPS on NVIDIA A6000 and
+  26 FPS on embedded NVIDIA Jetson AGX Orin (FP16).
+preferred-citation:
+  type: article
+  title: "DAS-Net: A Lightweight Dynamic Convolution Network with Attention Gates and Deep Supervision for UAV Semantic Segmentation"
+  authors:
+    - family-names: "Kim"
+      given-names: "Young Jae"
+    - family-names: "Kim"
+      given-names: "Sang-Chul"
+  journal: "Applied Sciences"
+  year: 2026
+  publisher:
+    name: "MDPI"
+  notes: "Under review (Major Revision Submitted, manuscript ID applsci-4300704)"

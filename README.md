@@ -1,136 +1,244 @@
-<div id="top" align="center">
+# DAS-Net
 
-# DAS-Net: A Lightweight Dynamic Convolution Network with Attention Gates and Deep Supervision for UAV Semantic Segmentation
+**A Lightweight Dynamic Convolution Network with Attention Gates and Deep Supervision for UAV Semantic Segmentation**
 
-Young Jae Kim and Sang-Chul Kim
+[![Paper](https://img.shields.io/badge/Paper-Applied%20Sciences-blue)](https://www.mdpi.com/journal/applsci)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.x-red.svg)](https://pytorch.org/)
 
-Kookmin University
+> **Real-time anti-UAV semantic segmentation with only 1.66M parameters.**
 
-<a href="#license">
-  <img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-blue.svg"/>
-</a>
+---
 
-</div>
+## 🎯 Highlights
+
+- ✨ **Lightweight**: 1.66 M parameters (14.7× smaller than ResNet-34 UNet)
+- 🎯 **Accurate**: Matches UNet (mean test mIoU **0.6780** vs. 0.6760) on a 174,008-image test set
+- ⚡ **Real-time**: **113 FPS** on NVIDIA A6000 GPU (FP32, batch size 1, 512×512)
+- 📊 **Statistically validated**: Three-seed Monte Carlo cross-validation (p = 0.045, Cohen's d = 1.74)
+- 🛰 **Anti-UAV ready**: Designed for resource-constrained UAV surveillance platforms
+
+---
+
+## 📋 Table of Contents
+
+- [Overview](#overview)
+- [Architecture](#architecture)
+- [Results](#results)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Citation](#citation)
+- [License](#license)
+- [Acknowledgements](#acknowledgements)
+
+---
 
 ## Overview
 
-DAS-Net extends [ThinDyUNet](https://github.com/SCKIMOSU/uav) with three architectural improvements for UAV semantic segmentation:
+**DAS-Net (Dynamic Attention-Supervised Network)** extends the lightweight ThinDyUNet baseline with three architectural improvements for UAV semantic segmentation:
 
-1. **Symmetric Dynamic Convolution** — DyConvBlock in both encoder and decoder
-2. **Attention Gates** — filter skip connections to suppress irrelevant features
-3. **Deep Supervision** — auxiliary loss heads at last 3 decoder stages (λ=0.4)
+1. **Symmetric Dynamic Convolution**: applied to both encoder and decoder paths (vs. encoder-only in ThinDyUNet)
+2. **Attention Gates**: filter encoder features at skip connections before concatenation with decoder features
+3. **Deep Supervision**: auxiliary loss heads at the last three decoder stages (λ = 0.4) — discarded at inference
 
-<img src="./img/Figure3.png" width="100%" alt="DAS-Net Architecture" align=center />
+The result is a 1.66 M-parameter model that achieves UNet-level accuracy at 14.7× fewer parameters and runs at real-time speeds on workstation GPUs.
+
+---
+
+## Architecture
+
+![DAS-Net Architecture](figures/Figure3.png)
+
+**DAS-Net architecture overview**: Symmetric encoder-decoder with DyConvBlocks (K=2 parallel kernels) in both paths, attention gates filtering all skip connections, and deep supervision auxiliary heads attached to the last three decoder stages (used only during training).
+
+### Component Comparison (Ablation Variants)
+
+| Model | Encoder | Decoder | Attention Gate | Deep Supervision | Params (M) |
+|---|---|---|---|---|---|
+| ThinDyUNet (baseline) | DyConvBlock | MultiCNNBlock | — | — | 1.34 |
+| FullDyUNet | DyConvBlock | DyConvBlock | — | — | 1.63 |
+| DeepSupDyUNet | DyConvBlock | MultiCNNBlock | — | ✓ (λ=0.4) | 1.34 |
+| **DAS-Net (Ours)** | **DyConvBlock** | **DyConvBlock** | **✓** | **✓ (λ=0.4)** | **1.66** |
+
+---
 
 ## Results
 
-### Test Set Performance (20K training samples, full test set ~168K images)
+### Test Set Performance (174,008 images, mean across 3 seeds)
 
-| Model | Params (M) | Precision | Recall | Dice | mIoU | ms | FPS |
-|-------|-----------|-----------|--------|------|------|----|-----|
-| ThinDyUNet | 1.34 | 0.9597 | 0.5937 | 0.6407 | 0.5731 | 8.72 | 114.7 |
-| PSPNet | 21.4 | 0.8553 | 0.6686 | 0.6768 | 0.6094 | 13.80 | 72.5 |
-| PAN | 21.4 | 0.9055 | 0.7047 | 0.7045 | 0.6438 | 14.77 | 67.7 |
-| DeepSupDyUNet | 1.34 | 0.9364 | 0.6838 | 0.7084 | 0.6485 | 8.67 | 115.3 |
-| FullDyUNet | 1.63 | 0.8794 | 0.7301 | 0.7394 | 0.6706 | 9.49 | 105.4 |
-| UNet | 24.4 | 0.9003 | 0.7333 | 0.7413 | 0.6760 | 14.16 | 70.6 |
-| **DAS-Net (Ours)** | **1.66** | **0.8408** | **0.7700** | **0.7506** | **0.6786** | **9.41** | **106.3** |
+| Model | Params (M) | Precision | Recall | Dice | mIoU | A6000 (ms) | FPS |
+|---|---|---|---|---|---|---|---|
+| ThinDyUNet | 1.34 | 0.9308 | 0.6449 | 0.6766 | 0.6115 | 8.29 | 120.6 |
+| PSPNet | 21.4 | 0.8554 | 0.6685 | 0.6768 | 0.6094 | 11.46 | 87.3 |
+| MobileUNet | 6.0 | 0.9248 | 0.6593 | 0.6790 | 0.6185 | 10.23 | 97.7 |
+| PAN | 21.4 | 0.9055 | 0.7047 | 0.7045 | 0.6438 | 11.16 | 89.6 |
+| FullDyUNet | 1.63 | 0.8816 | 0.6994 | 0.7159 | 0.6451 | 9.04 | 110.7 |
+| DeepSupDyUNet | 1.34 | 0.9268 | 0.7063 | 0.7222 | 0.6627 | 8.26 | 121.0 |
+| UNet | 24.4 | 0.9004 | 0.7333 | 0.7413 | 0.6760 | 9.93 | 100.7 |
+| **DAS-Net (Ours)** | **1.66** | 0.8422 | **0.7643** | **0.7509** | **0.6780** | 8.83 | 113.2 |
 
-### Ablation Study
+DAS-Net matches UNet's mIoU (0.6780 vs. 0.6760) with **14.7× fewer parameters** and achieves the highest mIoU among lightweight models (≤ 2 M parameters).
 
-| Model | Sym. Decoder | Attn Gate | Deep Sup | mIoU | Improvement |
-|-------|:-:|:-:|:-:|------|-------------|
-| ThinDyUNet (baseline) | — | — | — | 0.5731 | — |
-| FullDyUNet | ✓ | — | — | 0.6706 | +17.0% |
-| DeepSupDyUNet | — | — | ✓ | 0.6485 | +13.2% |
-| **DAS-Net (Ours)** | **✓** | **✓** | **✓** | **0.6786** | **+18.4%** |
+---
 
-## Dataset
+## Installation
 
-We use the UAV semantic segmentation dataset proposed by [Kim and Jang (Appl. Sci. 2025)](https://github.com/SCKIMOSU/uav).
+### Requirements
+- Python 3.8+
+- PyTorch 2.0+
+- CUDA 11.x or 12.x
+- NVIDIA GPU (8+ GB VRAM recommended for training)
 
-- 605,045 paired visible light and infrared images
-- Binary segmentation masks (UAV vs. background)
-- Training: 20,000 randomly sampled (seed=42)
-- Validation: 1,000
-- Test: full 168,143 images
+### Setup
+```bash
+# Clone repository
+git clone https://github.com/niceyoungjae/DAS-net.git
+cd DAS-net
 
-## Model Architecture
+# Create conda environment (recommended)
+conda create -n dasnet python=3.10 -y
+conda activate dasnet
 
-| Component | Details |
-|-----------|---------|
-| Encoder | 7-stage DyConvBlock + MaxPool |
-| Decoder | 7-stage DyConvBlock + Bilinear Upsample |
-| Attention Gate | At each skip connection |
-| Deep Supervision | Last 3 decoder stages (λ=0.4) |
-| Channels | 64 (fixed) |
-| DyConvBlock | K=2 kernels, τ=30, GroupNorm(8) + LeakyReLU |
-| Parameters | 1.66M |
-
-## Requirements
-
-```
-torch
-torchvision
-torchinfo
-omegaconf
-segmentation_models_pytorch
-einops
-tqdm
+# Install dependencies
+pip install -r requirements.txt
 ```
 
-## How to Run
+See [`docs/INSTALLATION.md`](docs/INSTALLATION.md) for detailed setup including dataset preparation.
+
+---
+
+## Usage
+
+### Dataset
+
+We use the UAV semantic segmentation dataset proposed in [Kim & Jang, *Appl. Sci.* 2025](https://doi.org/10.3390/app15137183):
+- **Source**: https://github.com/SCKIMOSU/uav
+- **Size**: 605,045 paired VL + IR images (1920×1080)
+- **Split**: 304,677 train / 126,360 val / 174,008 test
+
+Download and place the dataset following the structure in [`docs/INSTALLATION.md`](docs/INSTALLATION.md).
 
 ### Training
+
+Each model has its own dedicated training script:
+
 ```bash
-python train_dasnet.py          # DAS-Net (proposed)
-python train_thindyunet.py      # ThinDyUNet (baseline)
-python train_fulldyunet.py      # FullDyUNet (ablation)
-python train_deepsupdyunet.py   # DeepSupDyUNet (ablation)
-python train_unet.py            # UNet
-python train_pan.py             # PAN
-python train_pspnet.py          # PSPNet
+# Train DAS-Net
+python scripts/train_dasnet.py --config configs/config_dasnet.yaml
+
+# Train ablation variants
+python scripts/train_thindyunet.py --config configs/config_thindyunet.yaml
+python scripts/train_fulldyunet.py --config configs/config_fulldyunet.yaml
+python scripts/train_deepsupdyunet.py --config configs/config_deepsupdyunet.yaml
+
+# Train external baselines
+python scripts/train_unet.py --config configs/config_unet.yaml
+python scripts/train_mobileunet.py --config configs/config_mobileunet.yaml
+python scripts/train_pan.py --config configs/config_pan.yaml
+python scripts/train_pspnet.py --config configs/config_pspnet.yaml
 ```
 
-### Testing
+### Evaluation
+
 ```bash
-python test_dasnet.py
-python test_thindyunet.py
-python test_fulldyunet.py
-python test_deepsupdyunet.py
-python test_unet.py
-python test_pan.py
-python test_pspnet.py
+# Evaluate DAS-Net (loads checkpoint from configs)
+python scripts/test_dasnet.py --config configs/config_dasnet.yaml
+
+# Or use the generic eval script
+python scripts/eval.py --model dasnet --checkpoint <path-to-best.pth>
 ```
 
-### Configuration
+See [`docs/USAGE.md`](docs/USAGE.md) for advanced options including multi-seed training and custom inference.
 
-Each model has a corresponding config file (`config_*.yaml`) with dataset path, hyperparameters, and checkpoint settings.
+---
 
-## Training Details
+## Project Structure
 
-- Input: 512×512
-- Optimizer: AdamW, LR: 1e-4
-- Loss: DiceLoss
-- Batch size: 24
-- Epochs: 50 (early stopping, patience=30)
-- Scheduler: ReduceLROnPlateau (factor=0.5, patience=15)
-- GPU: NVIDIA A6000
-- Threshold: 0.5
+```
+DAS-net/
+├── README.md                  ← You are here
+├── LICENSE                    ← MIT License
+├── requirements.txt           ← Python dependencies
+├── CITATION.cff               ← How to cite
+├── configs/                   ← YAML configs for 8 models
+│   ├── config_dasnet.yaml
+│   ├── config_thindyunet.yaml
+│   └── ...
+├── model/                     ← Model definitions
+│   ├── DASNet.py
+│   ├── ThinDyUNet.py
+│   ├── FullDyUNet.py
+│   ├── DeepSupDyUNet.py
+│   └── _base.py
+├── dataset/                   ← Data loader
+├── scripts/                   ← Training & evaluation
+│   ├── train_dasnet.py        ← DAS-Net training
+│   ├── train_*.py             ← Per-model training (8 total)
+│   ├── test_*.py              ← Per-model evaluation (8 total)
+│   ├── trainer.py             ← Common training utilities
+│   └── eval.py                ← Generic evaluation
+├── utils/                     ← Common utilities (early stop, model save)
+├── docs/                      ← Detailed documentation
+└── figures/                   ← Paper figures (PNG)
+```
+
+---
 
 ## Citation
 
+If you find this work useful, please cite our paper:
+
 ```bibtex
-@article{kim2025dasnet,
-  title={DAS-Net: A Lightweight Dynamic Convolution Network with Attention Gates and Deep Supervision for UAV Semantic Segmentation},
-  author={Kim, Young Jae and Kim, Sang-Chul},
-  journal={Applied Sciences},
-  year={2025}
+@article{kim2026dasnet,
+  title   = {DAS-Net: A Lightweight Dynamic Convolution Network with Attention Gates
+             and Deep Supervision for UAV Semantic Segmentation},
+  author  = {Kim, Young Jae and Kim, Sang-Chul},
+  journal = {Applied Sciences},
+  year    = {2026},
+  note    = {Under review (Major Revision Submitted, applsci-4300704)}
 }
 ```
 
+Also consider citing the underlying dataset:
 
+```bibtex
+@article{kim2025dataset,
+  title   = {A Semantic Segmentation Dataset and Real-Time Localization Model
+             for Anti-UAV Applications},
+  author  = {Kim, Sang-Chul and Jang, Yeong Min},
+  journal = {Applied Sciences},
+  volume  = {15},
+  pages   = {7183},
+  year    = {2025},
+  doi     = {10.3390/app15137183}
+}
+```
+
+---
 
 ## License
 
-MIT License
+This project is licensed under the **MIT License** — see [LICENSE](LICENSE) for details.
+
+---
+
+## Acknowledgements
+
+- **Funding**: This work was supported by the Korea Research Institute for Defense Technology Planning and Advancement (KRIT) grant funded by the Korean government [DAPA] under Grant **KRIT-CT-23-041** (LiDAR/RADAR-Supported Edge AI-based Highly Reliable IR/UV FSO/OCC Specialized Research Laboratory, 2024).
+- **Dataset**: We thank the authors of [Kim & Jang, 2025](https://doi.org/10.3390/app15137183) for the UAV semantic segmentation dataset.
+- **Implementations**: External baselines (UNet, MobileUNet, PAN, PSPNet) are implemented via [`segmentation_models.pytorch`](https://github.com/qubvel-org/segmentation_models.pytorch).
+
+---
+
+## Contact
+
+- **Young Jae Kim** (First Author): niceyj16@kookmin.ac.kr
+- **Sang-Chul Kim** (Corresponding Author): sckim7@kookmin.ac.kr
+- **Affiliation**: Department of AI·SW / School of Computer Science, Kookmin University, Seoul, Republic of Korea
+
+For questions, please open a [GitHub Issue](https://github.com/niceyoungjae/DAS-net/issues).
+
+---
+
+⭐ **Star this repo** if you find it useful!

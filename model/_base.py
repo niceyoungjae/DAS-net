@@ -1,6 +1,6 @@
 import torch
 from torch import nn
-from typing import Type
+from typing import Type, List
 import einops
   
 class PatchEmbeddingLayer(nn.Module):
@@ -21,7 +21,7 @@ class PatchEmbeddingLayer(nn.Module):
         return embedded_patches
 
 
-def create_mlp_block(input_features: int, output_features: list[int], activation_function: Type[nn.Module], dropout_rate: float) -> nn.Module:
+def create_mlp_block(input_features: int, output_features: List[int], activation_function: Type[nn.Module], dropout_rate: float) -> nn.Module:
     
     layer_list = []
     for idx in range(len(output_features)):

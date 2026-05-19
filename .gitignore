@@ -1,11 +1,119 @@
+# ─────────────────────────────────────────────
+# Python
+# ─────────────────────────────────────────────
 __pycache__/
-*.pyc
-checkpoints/
-paper_materials/
-.claude/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+build/
+dist/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+.env
+
+# IDEs
+.idea/
 .vscode/
-montecarlo_*.csv
-montecarlo_*.log
-*.bak
-*.mc_bak
-node_modules/
+*.swp
+*.swo
+*.swn
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# ─────────────────────────────────────────────
+# Deep Learning artifacts (large files)
+# ─────────────────────────────────────────────
+# Model checkpoints (use HuggingFace Hub or release links)
+*.pth
+*.pt
+*.ckpt
+*.h5
+*.pb
+*.onnx
+*.engine  # TensorRT
+*.plan    # TensorRT
+*.tar.gz  # model archives
+checkpoints/
+ckpts/
+weights/
+
+# Logs
+logs/
+runs/
+lightning_logs/
+wandb/
+*.log
+events.out.tfevents.*
+
+# ─────────────────────────────────────────────
+# Datasets (never commit data!)
+# ─────────────────────────────────────────────
+data/
+datasets/
+*.npy
+*.npz
+*.tfrecord
+*.lmdb
+images/
+masks/
+raw_data/
+
+# ─────────────────────────────────────────────
+# Outputs
+# ─────────────────────────────────────────────
+outputs/
+predictions/
+visualizations/
+*.png.backup
+results/*_temp.csv
+results/*_debug.*
+
+# ─────────────────────────────────────────────
+# Documents (keep only necessary)
+# ─────────────────────────────────────────────
+# Word/PDF drafts (use docs/ for documentation only)
+*.docx
+*.doc
+*.pdf
+~$*  # Word lock files
+*.tmp
+
+# But KEEP these:
+!figures/*.pdf
+!docs/*.pdf
+
+# ─────────────────────────────────────────────
+# OS-specific
+# ─────────────────────────────────────────────
+desktop.ini
+.DS_Store
+.AppleDouble
+.LSOverride
+$RECYCLE.BIN/
+
+# ─────────────────────────────────────────────
+# Project-specific
+# ─────────────────────────────────────────────
+# Personal config
+.secrets
+config_local.yaml
+.env.local
+
+# Manuscript drafts (private)
+manuscript_drafts/
+revision_drafts/
+reviewer_comments_private/

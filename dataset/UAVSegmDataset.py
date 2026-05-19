@@ -10,9 +10,18 @@ from PIL import Image
 import cv2
 
 class UAVSegmDataset(Dataset):
-    def __init__(self, root, n_classes, transform, mode, max_samples=None):
-        self.root_input = os.path.join(root, "input")
-        self.root_mask = os.path.join(root, "labels")
+    def __init__(self, root, n_classes, transform, mode, max_samples=None,
+                 input_dirname="UAVSemanticSegmentationInput",
+                 mask_dirname="UAVSemanticSegmentationLabels"):
+        # Support both legacy ("input"/"labels") and full folder names.
+        candidate_input = os.path.join(root, input_dirname)
+        candidate_mask = os.path.join(root, mask_dirname)
+        if os.path.isdir(candidate_input) and os.path.isdir(candidate_mask):
+            self.root_input = candidate_input
+            self.root_mask = candidate_mask
+        else:
+            self.root_input = os.path.join(root, "input")
+            self.root_mask = os.path.join(root, "labels")
         self.transforms = transform
         self.n_classes = n_classes
         self.mode = mode
@@ -21,10 +30,14 @@ class UAVSegmDataset(Dataset):
 
         if max_samples is not None and len(self.images) > max_samples:
             import random
-            random.seed(123)
+            # Seed 우선순위: DASNET_SEED env var > 기본값 123
+            # (run_multiseed.py가 seed별로 DASNET_SEED를 주입 → 매 실험마다 다른 20K subset)
+            subset_seed = int(os.environ.get('DASNET_SEED', 123))
+            random.seed(subset_seed)
             indices = random.sample(range(len(self.images)), max_samples)
             self.images = [self.images[i] for i in sorted(indices)]
             self.masks = [self.masks[i] for i in sorted(indices)]
+            print(f"[Dataset] mode={mode} | subset seed={subset_seed} | sampled {max_samples}/{len(indices)} items")
             
         print(f"Number of files: {len(self.images)} {len(self.masks)}")
 
