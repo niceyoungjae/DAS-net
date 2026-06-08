@@ -3,7 +3,7 @@
 **A Lightweight Dynamic Convolution Network with Attention Gates and Deep Supervision for UAV Semantic Segmentation**
 
 [![🤗 Open in Spaces](https://img.shields.io/badge/🤗-Open%20in%20Spaces-blue?style=for-the-badge)](https://huggingface.co/spaces/niceyj/DAS-Net-Demo)
-[![Paper](https://img.shields.io/badge/Paper-Applied%20Sciences-blue)](https://www.mdpi.com/journal/applsci)
+[![Paper](https://img.shields.io/badge/Paper-Applied%20Sciences-blue)](https://doi.org/10.3390/app16115688)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.x-red.svg)](https://pytorch.org/)
@@ -250,18 +250,17 @@ If you find this work useful, please cite our paper:
 
 Also consider citing the underlying dataset:
 
-```bibtex
-@article{kim2025dataset,
-  title   = {A Semantic Segmentation Dataset and Real-Time Localization Model
-             for Anti-UAV Applications},
-  author  = {Kim, Sang-Chul and Jang, Yeong Min},
+@article{kim2026dasnet,
+  title   = {DAS-Net: A Lightweight Dynamic Convolution Network with Attention Gates
+             and Deep Supervision for UAV Semantic Segmentation},
+  author  = {Kim, Young Jae and Kim, Sang-Chul},
   journal = {Applied Sciences},
-  volume  = {15},
-  pages   = {7183},
-  year    = {2025},
-  doi     = {10.3390/app15137183}
+  volume  = {16},
+  number  = {11},
+  pages   = {5688},
+  year    = {2026},
+  doi     = {10.3390/app16115688}
 }
-```
 
 ---
 
