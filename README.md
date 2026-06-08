@@ -243,26 +243,28 @@ If you find this work useful, please cite our paper:
              and Deep Supervision for UAV Semantic Segmentation},
   author  = {Kim, Young Jae and Kim, Sang-Chul},
   journal = {Applied Sciences},
-  year    = {2026},
-  note    = {Under review (Major Revision Submitted, applsci-4300704)}
-}
-```
-
-Also consider citing the underlying dataset:
-
-@article{kim2026dasnet,
-  title   = {DAS-Net: A Lightweight Dynamic Convolution Network with Attention Gates
-             and Deep Supervision for UAV Semantic Segmentation},
-  author  = {Kim, Young Jae and Kim, Sang-Chul},
-  journal = {Applied Sciences},
   volume  = {16},
   number  = {11},
   pages   = {5688},
   year    = {2026},
   doi     = {10.3390/app16115688}
 }
+```
 
----
+Also consider citing the underlying dataset:
+
+```bibtex
+@article{kim2025dataset,
+  title   = {A Semantic Segmentation Dataset and Real-Time Localization Model
+             for Anti-UAV Applications},
+  author  = {Kim, Sang-Chul and Jang, Yeong Min},
+  journal = {Applied Sciences},
+  volume  = {15},
+  pages   = {7183},
+  year    = {2025},
+  doi     = {10.3390/app15137183}
+}
+```
 
 ## License
 
