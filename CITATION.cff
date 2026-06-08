@@ -10,11 +10,12 @@ authors:
     given-names: "Sang-Chul"
     affiliation: "School of Computer Science, Kookmin University"
     email: "sckim7@kookmin.ac.kr"
-date-released: 2026-05-19
+date-released: 2026-06-05
 version: "1.0.0"
 license: "MIT"
 repository-code: "https://github.com/niceyoungjae/DAS-net"
 url: "https://github.com/niceyoungjae/DAS-net"
+doi: "10.3390/app16115688"
 keywords:
   - "anti-UAV"
   - "semantic segmentation"
@@ -47,7 +48,11 @@ preferred-citation:
     - family-names: "Kim"
       given-names: "Sang-Chul"
   journal: "Applied Sciences"
+  volume: 16
+  issue: 11
+  article-number: "5688"
   year: 2026
+  doi: "10.3390/app16115688"
+  url: "https://doi.org/10.3390/app16115688"
   publisher:
     name: "MDPI"
-  notes: "Under review (Major Revision Submitted, manuscript ID applsci-4300704)"
